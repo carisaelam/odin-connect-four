@@ -1,2 +1,3 @@
-# odin-connect-four
-A Connect Four style CLI game written in Ruby 
+# Connect Four - The Odin Project
+
+In this project, I developed a Connect Four game in Ruby as part of The Odin Project curriculum. The goal was to create a playable version of the classic game where players drop colored discs into a grid to connect four of their own color vertically, horizontally, or diagonally. Throughout the development process, I adhered to the principles of test-driven development (TDD), writing tests before implementing each feature to ensure functionality and maintainability. This approach not only guided the design and implementation but also helped in debugging and refining the game mechanics. The project also focused on object-oriented programming principles, ensuring clarity and modularity in the codebase.
