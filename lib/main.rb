@@ -32,16 +32,18 @@ class Player
 end
 
 class Board
-  attr_accessor :row, :column
+  attr_accessor :row, :column, :board
 
   def initialize
     @row = 6
     @column = 7
   end
 
-  # [x] prints a dot grid according to row/column values
-  def print_board(row_count = @row, column_count = @column)
-    
+  # [x] builds a grid according to row/column values
+  def build_board(row_count = @row, column_count = @column)
+    board = Array.new(row_count) { Array.new(column_count, '.') }
+    board.each do |row|
+      puts row.join(' ')
     end
   end
 
@@ -57,5 +59,5 @@ end
 
 # new_game.board.print_board
 
-board_testing = Game.new
-board_testing.board.print_board
+# board_testing = Game.new
+# board_testing.board.build_board
