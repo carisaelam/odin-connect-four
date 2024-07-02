@@ -31,38 +31,40 @@ end
 
 # BOARD CLASS TESTS
 RSpec.describe Board do
-  describe '#print_board' do
+  describe '#build_board' do
     subject(:game_board) { described_class.new }
     context 'when given row and column values' do
-      it 'prints a grid according to row and column values' do
-        expected_print = <<~GRID
-          . . .
-          . . .
-        GRID
-        expect { game_board.print_board(2, 3) }.to output(expected_print).to_stdout
+      it 'builds a grid according to row and column values' do
+        grid = Array.new(2) { Array.new(3, '.') }
+        expect(game_board.build_board(2, 3)).to eq(grid)
       end
     end
 
     context 'when given no row and column values' do
-      it 'prints a grid according to default values' do
-        expected_print = <<~GRID
-          . . . . . . .
-          . . . . . . .
-          . . . . . . .
-          . . . . . . .
-          . . . . . . .
-          . . . . . . .
-        GRID
-        expect { game_board.print_board(6, 7) }.to output(expected_print).to_stdout
+      it 'builds a grid according to default values' do
+        grid = Array.new(6) { Array.new(7, '.') }
+        expect(game_board.build_board).to eq(grid)
       end
     end
   end
 
-  # describe '#access_square' do
-  #   subject(:board_access) { described_class.new }
-  #   it 'accesses a specific square on the board' do
-  #     chosen_square = board_access.print_board([0, 0])
-  #     expect(board_access.access_square(0, 0)).to eq(chosen_square)
-  #   end
-  # end
+  describe '#update_board' do
+    subject(:board_update) { described_class.new }
+    it 'updates board instance variable with given array' do
+      test_array = [['.', '.'], ['.', '.']]
+      board_update.update_board(test_array)
+      expect(board_update.board).to eq(test_array)
+    end
+  end
+
+  describe '#place_piece' do
+    subject(:board_place) { described_class.new }
+    it 'updates board array at specified cell' do
+      row = 0
+      column = 1
+      symbol = 'x'
+      board_place.place_piece(0, 1, 'x')
+      expect(board_place.board[0][1]).to eq(symbol)
+    end
+  end
 end
