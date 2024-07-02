@@ -41,8 +41,7 @@ class Board
 
   # [x] prints a dot grid according to row/column values
   def print_board(row_count = @row, column_count = @column)
-    row_count.times do
-      puts Array.new(column_count, '.').join(' ')
+    
     end
   end
 
