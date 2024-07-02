@@ -42,9 +42,6 @@ class Board
   # [x] builds a grid according to row/column values
   def build_board(row_count = @row, column_count = @column)
     board = Array.new(row_count) { Array.new(column_count, '.') }
-    # board.each do |row|
-    #   puts row.join(' ')
-    # end
   end
 
   # [-] prints given array of arrays
@@ -64,16 +61,13 @@ class Board
     @board[row_choice][column_choice] = symbol
   end
 
-  # [ ] drops a piece in the lowest available row of given column
+  # [x] drops a piece in the lowest available row of given column
   def falling_piece(column_select, symbol)
-    row_select = 5
+    i = @row - 1
+    return nil if @board[0][column_select] != '.'
+
+    i -= 1 until @board[i][column_select] == '.' || i.zero?
+    row_select = i
     @board[row_select][column_select] = symbol
   end
 end
-
-instance = Board.new
-instance.place_piece(5, 1, 'x')
-instance.falling_piece(1, 'x')
-current_board = instance.board
-instance.print_board(current_board)
-instance.falling_piece(0, 'y')

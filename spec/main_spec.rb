@@ -60,11 +60,42 @@ RSpec.describe Board do
   describe '#place_piece' do
     subject(:board_place) { described_class.new }
     it 'updates board array at specified cell' do
-      row = 0
-      column = 1
       symbol = 'x'
       board_place.place_piece(0, 1, 'x')
       expect(board_place.board[0][1]).to eq(symbol)
+    end
+  end
+
+  describe '#falling_piece' do
+    subject(:board_fall) { described_class.new }
+    context 'when the column is empty' do
+      it 'drops a piece into the lowest row' do
+        symbol = 'x'
+        board_fall.falling_piece(0, 'x')
+        expect(board_fall.board[5][0]).to eq(symbol)
+      end
+    end
+
+    context 'when the column has one piece already' do
+      before do
+        board_fall.board[5][0] = 'x'
+      end
+      it 'drops a piece into the second lowest row' do
+        symbol = 'x'
+        board_fall.falling_piece(0, 'x')
+        expect(board_fall.board[4][0]).to eq(symbol)
+      end
+    end
+
+    context 'when the column is full' do
+      before do
+        board_fall.board[0][0] = 'x'
+      end
+      it 'returns nil' do
+        symbol = 'x'
+        result = board_fall.falling_piece(0, 'x')
+        expect(result).to be(nil)
+      end
     end
   end
 end
