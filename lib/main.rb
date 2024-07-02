@@ -4,7 +4,6 @@ class Game
   def initialize
     @player1 = Player.new
     @player2 = Player.new
-    @board = Board.new
   end
 
   # [x] displays welcome message
@@ -37,7 +36,7 @@ class Board
   def initialize
     @row = 6
     @column = 7
-    @board
+    @board = build_board
   end
 
   # [x] builds a grid according to row/column values
@@ -51,6 +50,11 @@ class Board
   # [x] updates @board with given array
   def update_board(array)
     @board = array
+  end
+
+  # [x] updates board array at specified cell
+  def place_piece(row_choice, column_choice, symbol)
+    @board[row_choice][column_choice] = symbol
   end
 end
 
