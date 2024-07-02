@@ -37,6 +37,7 @@ class Board
   def initialize
     @row = 6
     @column = 7
+    @board
   end
 
   # [x] builds a grid according to row/column values
@@ -47,17 +48,11 @@ class Board
     end
   end
 
-  def access_square(x, y)
+  # [x] updates @board with given array
+  def update_board(array)
+    @board = array
   end
 end
-
-# new_game = Game.new
-# new_game.player1.assign_name('ruby')
-# new_game.player2.assign_name('java')
-# p "Player one's name: #{new_game.player1.name}"
-# p "Player two's name: #{new_game.player2.name}"
-
-# new_game.board.print_board
 
 # board_testing = Game.new
 # board_testing.board.build_board
