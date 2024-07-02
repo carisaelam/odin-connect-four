@@ -66,6 +66,7 @@ class Board
 end
 
 instance = Board.new
-instance.place_piece(0, 0, 'x')
+instance.place_piece(5, 1, 'x')
 current_board = instance.board
 instance.print_board(current_board)
+
