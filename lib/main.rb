@@ -7,12 +7,12 @@ class Game
     @board = Board.new
   end
 
-  # ✅ displays welcome message
+  # [x] displays welcome message
   def welcome_message
     puts 'Welcome to Connect Four!'
   end
 
-  # no test needed
+  # [-] collects user input; returns string
   def collect_input
     gets.chomp
   end
@@ -25,7 +25,7 @@ class Player
     @name = nil
   end
 
-  # ✅ assigns name
+  # [x] assigns player name
   def assign_name(name_input)
     @name = name_input
   end
@@ -39,10 +39,14 @@ class Board
     @column = 7
   end
 
+  # [x] prints a dot grid according to row/column values
   def print_board(row_count = @row, column_count = @column)
     row_count.times do
       puts Array.new(column_count, '.').join(' ')
     end
+  end
+
+  def access_square(x, y)
   end
 end
 
@@ -53,3 +57,6 @@ end
 # p "Player two's name: #{new_game.player2.name}"
 
 # new_game.board.print_board
+
+board_testing = Game.new
+board_testing.board.print_board

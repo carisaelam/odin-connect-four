@@ -57,4 +57,12 @@ RSpec.describe Board do
       end
     end
   end
+
+  # describe '#access_square' do
+  #   subject(:board_access) { described_class.new }
+  #   it 'accesses a specific square on the board' do
+  #     chosen_square = board_access.print_board([0, 0])
+  #     expect(board_access.access_square(0, 0)).to eq(chosen_square)
+  #   end
+  # end
 end
