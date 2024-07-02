@@ -42,7 +42,14 @@ class Board
   # [x] builds a grid according to row/column values
   def build_board(row_count = @row, column_count = @column)
     board = Array.new(row_count) { Array.new(column_count, '.') }
-    board.each do |row|
+    # board.each do |row|
+    #   puts row.join(' ')
+    # end
+  end
+
+  # [-] prints given array of arrays
+  def print_board(array)
+    array.each do |row|
       puts row.join(' ')
     end
   end
@@ -58,5 +65,7 @@ class Board
   end
 end
 
-# board_testing = Game.new
-# board_testing.board.build_board
+instance = Board.new
+instance.place_piece(0, 0, 'x')
+current_board = instance.board
+instance.print_board(current_board)
