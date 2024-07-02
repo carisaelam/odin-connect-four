@@ -98,4 +98,35 @@ RSpec.describe Board do
       end
     end
   end
+
+  describe '#check_win' do
+    context 'when a player has vertical four in a row' do
+      subject(:board_vertical_win) { described_class.new }
+      before do
+        board_vertical_win.board[0][0] = 'x'
+        board_vertical_win.board[1][0] = 'x'
+        board_vertical_win.board[2][0] = 'x'
+        board_vertical_win.board[3][0] = 'x'
+      end
+      it 'returns a win for the player' do
+        result = board_vertical_win.check_win
+        expect(result).to eq('win')
+      end
+    end
+  end
+
+  describe '#four_in_a_row?' do
+    context 'when four like symbols are horizontal' do
+      subject(:board_four) { described_class.new }
+      before do
+        board_four.board[0][0] = 'x'
+        board_four.board[0][1] = 'x'
+        board_four.board[0][2] = 'x'
+        board_four.board[0][3] = 'x'
+      end
+      it 'returns true' do
+        expect(board_four.four_in_a_row?).to eq(true)
+      end
+    end
+  end
 end
