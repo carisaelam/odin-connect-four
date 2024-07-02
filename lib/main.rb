@@ -63,10 +63,17 @@ class Board
   def place_piece(row_choice, column_choice, symbol)
     @board[row_choice][column_choice] = symbol
   end
+
+  # [ ] drops a piece in the lowest available row of given column
+  def falling_piece(column_select, symbol)
+    row_select = 5
+    @board[row_select][column_select] = symbol
+  end
 end
 
 instance = Board.new
 instance.place_piece(5, 1, 'x')
+instance.falling_piece(1, 'x')
 current_board = instance.board
 instance.print_board(current_board)
-
+instance.falling_piece(0, 'y')
