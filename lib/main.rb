@@ -31,12 +31,13 @@ class Player
 end
 
 class Board
-  attr_accessor :row, :column, :board
+  attr_accessor :row, :column, :board, :win
 
   def initialize
     @row = 6
     @column = 7
     @board = build_board
+    @win = false
   end
 
   # [x] builds a grid according to row/column values
@@ -71,35 +72,55 @@ class Board
     @board[row_select][column_select] = symbol
   end
 
-  # [ ] checks for win
-  def check_win
-    four_in_a_row? ? 'win' : nil
+  # [x] updates value of @win to true
+  def declare_win
+    @win = true
   end
 
-  # [ ] checks for four like symbols in a row
-  def four_in_a_row?
-    symbol = 'x'
-    row0 = @board[0]
+  def increase_count(row)
     count = 0
+    symbol = 'x'
 
-    row0.each_with_index do |cell, i|
-      return true if count == 3
-
-      count += 1 if row0[i] == symbol && row0[i + 1] == symbol
+    row.each_with_index do |cell, idx|
+      if count == 3
+        declare_win
+        return true
+      end
+      count += 1 if row[idx] == symbol && row[idx + 1] == symbol
     end
+  end
+
+  # [x] checks for four like symbols in a row
+  def four_horizontal?
+    rows = (0..@row - 1).to_a
+    rows.each do |num|
+      true if @win
+
+      increase_count(@board[num])
+    end
+    @win
+  end
+
+  # [ ] checks for four like symbols in a column
+  def four_vertical?
+    @board = @board.transpose
+    rows = (0..@row - 1).to_a
+    rows.each do |num|
+      true if @win
+
+      increase_count(@board[num])
+    end
+    @win
   end
 end
 
-# game = Board.new
-# board = game.board
-# game.place_piece(0, 0, 'S')
-# game.place_piece(0, 1, 'S')
-# game.place_piece(0, 2, 'S')
-# game.place_piece(0, 3, 'S')
-# game.falling_piece(0, 'x')
-# game.falling_piece(1, 'x')
-# game.falling_piece(2, 'x')
-# game.falling_piece(3, 'x')
-# printed = game.print_board(board)
-# printed
-# game.four_in_a_row?(board)
+game = Board.new
+board = game.board
+game.place_piece(0, 0, 'x')
+game.place_piece(0, 1, 'x')
+game.place_piece(0, 2, 'x')
+game.place_piece(0, 3, 'x')
+
+printed = game.print_board(board)
+printed
+p game.four_horizontal?

@@ -99,24 +99,19 @@ RSpec.describe Board do
     end
   end
 
-  describe '#check_win' do
-    context 'when a player has vertical four in a row' do
-      subject(:board_vertical_win) { described_class.new }
-      before do
-        board_vertical_win.board[0][0] = 'x'
-        board_vertical_win.board[1][0] = 'x'
-        board_vertical_win.board[2][0] = 'x'
-        board_vertical_win.board[3][0] = 'x'
-      end
-      it 'returns a win for the player' do
-        result = board_vertical_win.check_win
-        expect(result).to eq('win')
-      end
+  describe '#declare_win' do
+    subject(:board_declared) { described_class.new }
+    before do
+      board_declared.win = false
+    end
+    it 'updates value of @win to true' do
+      result = board_declared.declare_win
+      expect(board_declared.win).to be true
     end
   end
 
-  describe '#four_in_a_row?' do
-    context 'when four like symbols are horizontal' do
+  describe '#four_horizontal?' do
+    context 'when four like symbols are in line top row' do
       subject(:board_four) { described_class.new }
       before do
         board_four.board[0][0] = 'x'
@@ -125,7 +120,48 @@ RSpec.describe Board do
         board_four.board[0][3] = 'x'
       end
       it 'returns true' do
-        expect(board_four.four_in_a_row?).to eq(true)
+        expect(board_four.four_horizontal?).to eq(true)
+      end
+    end
+
+    context 'when four like symbols are in line bottom row' do
+      subject(:board_bottom) { described_class.new }
+      before do
+        board_bottom.board[5][0] = 'x'
+        board_bottom.board[5][1] = 'x'
+        board_bottom.board[5][2] = 'x'
+        board_bottom.board[5][3] = 'x'
+      end
+      it 'returns true' do
+        expect(board_bottom.four_horizontal?).to eq(true)
+      end
+    end
+  end
+
+  describe '#four_vertical?' do
+    context 'when four like symbols are in first column' do
+      subject(:board_vert) { described_class.new }
+      before do
+        board_vert.board[0][0] = 'x'
+        board_vert.board[1][0] = 'x'
+        board_vert.board[2][0] = 'x'
+        board_vert.board[3][0] = 'x'
+      end
+      it 'returns true' do
+        expect(board_vert.four_vertical?).to eq(true)
+      end
+    end
+
+    context 'when four like symbols are in last column' do
+      subject(:board_vert) { described_class.new }
+      before do
+        board_vert.board[0][5] = 'x'
+        board_vert.board[1][5] = 'x'
+        board_vert.board[2][5] = 'x'
+        board_vert.board[3][5] = 'x'
+      end
+      it 'returns true' do
+        expect(board_vert.four_vertical?).to eq(true)
       end
     end
   end
