@@ -70,4 +70,36 @@ class Board
     row_select = i
     @board[row_select][column_select] = symbol
   end
+
+  # [ ] checks for win
+  def check_win
+    four_in_a_row? ? 'win' : nil
+  end
+
+  # [ ] checks for four like symbols in a row
+  def four_in_a_row?
+    symbol = 'x'
+    row0 = @board[0]
+    count = 0
+
+    row0.each_with_index do |cell, i|
+      return true if count == 3
+
+      count += 1 if row0[i] == symbol && row0[i + 1] == symbol
+    end
+  end
 end
+
+# game = Board.new
+# board = game.board
+# game.place_piece(0, 0, 'S')
+# game.place_piece(0, 1, 'S')
+# game.place_piece(0, 2, 'S')
+# game.place_piece(0, 3, 'S')
+# game.falling_piece(0, 'x')
+# game.falling_piece(1, 'x')
+# game.falling_piece(2, 'x')
+# game.falling_piece(3, 'x')
+# printed = game.print_board(board)
+# printed
+# game.four_in_a_row?(board)
