@@ -124,6 +124,19 @@ RSpec.describe Board do
       end
     end
 
+    context 'when four in top row at end' do
+      subject(:board_four) { described_class.new }
+      before do
+        board_four.board[0][3] = 'x'
+        board_four.board[0][4] = 'x'
+        board_four.board[0][5] = 'x'
+        board_four.board[0][6] = 'x'
+      end
+      it 'returns true' do
+        expect(board_four.four_horizontal?).to eq(true)
+      end
+    end
+
     context 'when four like symbols are in line bottom row' do
       subject(:board_bottom) { described_class.new }
       before do
@@ -152,6 +165,19 @@ RSpec.describe Board do
       end
     end
 
+    context 'when four in first column at end' do
+      subject(:board_vert) { described_class.new }
+      before do
+        board_vert.board[2][0] = 'x'
+        board_vert.board[3][0] = 'x'
+        board_vert.board[4][0] = 'x'
+        board_vert.board[5][0] = 'x'
+      end
+      it 'returns true' do
+        expect(board_vert.four_vertical?).to eq(true)
+      end
+    end
+
     context 'when four like symbols are in last column' do
       subject(:board_vert) { described_class.new }
       before do
@@ -161,7 +187,47 @@ RSpec.describe Board do
         board_vert.board[3][5] = 'x'
       end
       it 'returns true' do
-        expect(board_vert.four_vertical?).to eq(true)
+        expect(board_vert.four_vertical?).to be(true)
+      end
+    end
+  end
+
+  describe '#four_diagonal?' do
+    context 'when four are up and to the right' do
+      subject(:board_diag) { described_class.new }
+      before do
+        board_diag.board[5][0] = 'x'
+        board_diag.board[4][1] = 'x'
+        board_diag.board[3][2] = 'x'
+        board_diag.board[2][3] = 'x'
+      end
+      it 'returns true' do
+        expect(board_diag.four_diagonal?).to be true
+      end
+    end
+    context 'when four are down and to the right' do
+      subject(:board_diag_down) { described_class.new }
+      before do
+        board_diag_down.board[0][0] = 'x'
+        board_diag_down.board[1][1] = 'x'
+        board_diag_down.board[2][2] = 'x'
+        board_diag_down.board[3][3] = 'x'
+      end
+      it 'returns true' do
+        expect(board_diag_down.four_diagonal?).to be true
+      end
+    end
+
+    context 'when four are down and right at bottom' do
+      subject(:board_diag_bottom) { described_class.new }
+      before do
+        board_diag_bottom.board[2][3] = 'x'
+        board_diag_bottom.board[3][4] = 'x'
+        board_diag_bottom.board[4][5] = 'x'
+        board_diag_bottom.board[5][6] = 'x'
+      end
+      it 'returns true' do
+        expect(board_diag_bottom.four_diagonal?).to be true
       end
     end
   end

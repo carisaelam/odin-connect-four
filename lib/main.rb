@@ -90,7 +90,7 @@ class Board
     end
   end
 
-  # [x] checks for four like symbols in a row
+  # [x] checks for four like symbols horizontally or vertically
   def four_horizontal?
     rows = (0..@row - 1).to_a
     rows.each do |num|
@@ -112,15 +112,41 @@ class Board
     end
     @win
   end
+
+  def four_diagonal?
+    count = 0
+    symbol = 'x'
+
+    @board.each_with_index do |r, idx| # row of board
+      r.each_with_index do |c, i|
+        cell = @board[idx][i]
+
+        if count == 3
+          declare_win
+          return true
+        end
+        if @board[idx][i] == symbol && @board[idx - 1][i + 1] == symbol
+          count += 1
+        elsif @board[idx][i] == symbol && @board[idx + 1][i + 1] == symbol
+          count += 1
+        end
+      end
+    end
+  end
 end
 
-game = Board.new
-board = game.board
-game.place_piece(0, 0, 'x')
-game.place_piece(0, 1, 'x')
-game.place_piece(0, 2, 'x')
-game.place_piece(0, 3, 'x')
+# game = Board.new
+# board = game.board
+# game.place_piece(0, 0, 'x')
+# game.place_piece(1, 1, 'x')
+# game.place_piece(2, 2, 'x')
+# game.place_piece(3, 3, 'x')
 
-printed = game.print_board(board)
-printed
-p game.four_horizontal?
+# # game.place_piece(5, 0, 'x')
+# # game.place_piece(4, 1, 'x')
+# # game.place_piece(3, 2, 'x')
+# # game.place_piece(2, 3, 'x')
+
+# printed = game.print_board(board)
+# printed
+# p game.four_diagonal?
