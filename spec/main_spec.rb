@@ -99,19 +99,18 @@ RSpec.describe Board do
     end
   end
 
-  describe '#check_win' do
-    subject(:board_win) { described_class.new }
+  describe '#declare_win' do
+    subject(:board_declared) { described_class.new }
     before do
-      board_win.win = true
+      board_declared.win = false
     end
-    it 'returns a win when @win is true' do
-      p "board win status; #{board_win.win}"
-      win_status = board_win.win
-      expect(win_status).to be true
+    it 'updates value of @win to true' do
+      result = board_declared.declare_win
+      expect(board_declared.win).to be true
     end
   end
 
-  describe '#four_in_a_row?' do
+  describe '#four_horizontal?' do
     context 'when four like symbols are in line top row' do
       subject(:board_four) { described_class.new }
       before do
@@ -121,7 +120,7 @@ RSpec.describe Board do
         board_four.board[0][3] = 'x'
       end
       it 'returns true' do
-        expect(board_four.four_in_a_row?).to eq(true)
+        expect(board_four.four_horizontal?).to eq(true)
       end
     end
 
@@ -134,7 +133,35 @@ RSpec.describe Board do
         board_bottom.board[5][3] = 'x'
       end
       it 'returns true' do
-        expect(board_bottom.four_in_a_row?).to eq(true)
+        expect(board_bottom.four_horizontal?).to eq(true)
+      end
+    end
+  end
+
+  describe '#four_vertical?' do
+    context 'when four like symbols are in first column' do
+      subject(:board_vert) { described_class.new }
+      before do
+        board_vert.board[0][0] = 'x'
+        board_vert.board[1][0] = 'x'
+        board_vert.board[2][0] = 'x'
+        board_vert.board[3][0] = 'x'
+      end
+      it 'returns true' do
+        expect(board_vert.four_vertical?).to eq(true)
+      end
+    end
+
+    context 'when four like symbols are in last column' do
+      subject(:board_vert) { described_class.new }
+      before do
+        board_vert.board[0][5] = 'x'
+        board_vert.board[1][5] = 'x'
+        board_vert.board[2][5] = 'x'
+        board_vert.board[3][5] = 'x'
+      end
+      it 'returns true' do
+        expect(board_vert.four_vertical?).to eq(true)
       end
     end
   end

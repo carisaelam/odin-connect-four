@@ -72,12 +72,7 @@ class Board
     @board[row_select][column_select] = symbol
   end
 
-  # [x] checks for win
-  def check_win
-    @win ? true : false
-  end
-
-  # [ ] declares win
+  # [x] updates value of @win to true
   def declare_win
     @win = true
   end
@@ -95,27 +90,37 @@ class Board
     end
   end
 
-  # [ ] checks for four like symbols in a row
-  def four_in_a_row?
-    rows = [0, 1, 2, 3, 4, 5]
+  # [x] checks for four like symbols in a row
+  def four_horizontal?
+    rows = (0..@row - 1).to_a
     rows.each do |num|
       true if @win
 
       increase_count(@board[num])
     end
-    check_win
+    @win
+  end
+
+  # [ ] checks for four like symbols in a column
+  def four_vertical?
+    @board = @board.transpose
+    rows = (0..@row - 1).to_a
+    rows.each do |num|
+      true if @win
+
+      increase_count(@board[num])
+    end
+    @win
   end
 end
 
-# game = Board.new
-# board = game.board
-# # game.place_piece(0, 0, 'x')
-# # game.place_piece(0, 1, 'x')
-# # game.place_piece(0, 2, 'x')
-# # game.place_piece(0, 3, 'x')
+game = Board.new
+board = game.board
+game.place_piece(0, 0, 'x')
+game.place_piece(0, 1, 'x')
+game.place_piece(0, 2, 'x')
+game.place_piece(0, 3, 'x')
 
-# # printed = game.print_board(board)
-# # printed
-# # p game.four_in_a_row?
-
-# p game.win
+printed = game.print_board(board)
+printed
+p game.four_horizontal?
