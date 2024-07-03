@@ -5,7 +5,46 @@ RSpec.describe Game do
   describe '#welcome_message' do
     subject(:game_welcome) { described_class.new }
     it 'displays welcome message' do
-      expect { game_welcome.welcome_message }.to output("Welcome to Connect Four!\n").to_stdout
+      expect { game_welcome.welcome_message }.to output("Welcome to Connect Four!\n\n").to_stdout
+    end
+  end
+
+  describe '#assign_player_names' do
+    subject(:game_names) { described_class.new }
+    it 'assigns @player1 collected name' do
+      allow(game_names).to receive(:collect_input).and_return('Ruby', 'Java')
+      game_names.assign_player_names
+      expect(game_names.player1.name).to eq('Ruby')
+    end
+
+    it 'assigns @player2 collected name' do
+      allow(game_names).to receive(:collect_input).and_return('Ruby', 'Java')
+      game_names.assign_player_names
+      expect(game_names.player2.name).to eq('Java')
+    end
+  end
+
+  describe '#assign_player_symbols' do
+    subject(:game_symbols) { described_class.new }
+    it 'assigns @player1 collected symbol' do
+      allow(game_symbols).to receive(:collect_input).and_return('1', '2')
+      game_symbols.assign_player_symbols
+      expect(game_symbols.player1.symbol).to eq('1')
+    end
+
+    it 'assigns @player2 collected symbol' do
+      allow(game_symbols).to receive(:collect_input).and_return('1', '2')
+      game_symbols.assign_player_symbols
+      expect(game_symbols.player2.symbol).to eq('2')
+    end
+
+    context 'when user types more than one character' do
+      subject(:game_long_symbol) { described_class.new }
+      it 'assigns player the first character they typed' do
+        allow(game_long_symbol).to receive(:collect_input).and_return('a;slkdj;flkasj;fsdf', '43234lkjlskjdf;lk')
+        game_long_symbol.assign_player_symbols
+        expect(game_long_symbol.player1.symbol).to eq('a')
+      end
     end
   end
 end

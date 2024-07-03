@@ -8,20 +8,46 @@ class Game
 
   # [x] displays welcome message
   def welcome_message
-    puts 'Welcome to Connect Four!'
+    puts "Welcome to Connect Four!\n\n"
+  end
+
+  # [x] assigns player names
+  def assign_player_names
+    print 'Player One Name: '
+    @player1.name = collect_input
+    print 'Player Two Name: '
+    @player2.name = collect_input
+    puts "Hi #{@player1.name} and #{@player2.name}!\n\n"
+  end
+
+  # [ ] assigns player symbols
+  def assign_player_symbols
+    print 'Player One, type a symbol: '
+    @player1.symbol = collect_input[0]
+    print 'Player Two, type a symbol: '
+    @player2.symbol = collect_input[0]
+    puts "Great. #{@player1.name} is #{@player1.symbol} and #{@player2.name} is #{@player2.symbol}!\n\n"
+    puts "Let's play some Connect Four!\n\n"
   end
 
   # [-] collects user input; returns string
   def collect_input
     gets.chomp
   end
+
+  def start
+    welcome_message
+    assign_player_names
+    assign_player_symbols
+  end
 end
 
 class Player
-  attr_accessor :name
+  attr_accessor :name, :symbol
 
   def initialize
     @name = nil
+    @symbol = nil
   end
 
   # [x] assigns player name
@@ -119,8 +145,6 @@ class Board
 
     @board.each_with_index do |r, idx| # row of board
       r.each_with_index do |c, i|
-        cell = @board[idx][i]
-
         if count == 3
           declare_win
           return true
@@ -150,3 +174,6 @@ end
 # printed = game.print_board(board)
 # printed
 # p game.four_diagonal?
+
+game = Game.new
+game.start
