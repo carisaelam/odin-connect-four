@@ -270,4 +270,48 @@ RSpec.describe Board do
       end
     end
   end
+
+  # describe '#check_win?' do
+  #   context 'if horizontal win' do
+  #     subject(:board_h_win) { described_class.new }
+  #     before do
+  #       board_h_win.four_horizontal? = false
+  #     end
+  #     it 'checks for any winning condition' do
+  #       expect(board_h_win.check_win?).to be true
+  #     end
+  #   end
+  #   context 'if vertical win' do
+  #     subject(:board_v_win) { described_class.new }
+
+  #     before do
+  #       board_v_win.four_vertical? == true
+  #     end
+  #     it 'checks for any winning condition' do
+  #       expect(board_v_win.check_win?).to be true
+  #     end
+  #   end
+  #   context 'if diagonal win' do
+  #     subject(:board_d_win) { described_class.new }
+
+  #     before do
+  #       board_d_win.four_diagonal? == true
+  #     end
+  #     it 'checks for any winning condition' do
+  #       expect(board_d_win.check_win?).to be true
+  #     end
+  #   end
+  #   context 'if no win' do
+  #     subject(:board_no_win) { described_class.new }
+
+  #     before do
+  #       board_no_win.four_horizontal? == false &&
+  #         board_no_win.four_vertical? == false &&
+  #         board_no_win.four_diagonal? == false
+  #     end
+  #     it 'checks for any winning condition' do
+  #       expect(board_no_win.check_win?).to be false
+  #     end
+  #   end
+  # end
 end
