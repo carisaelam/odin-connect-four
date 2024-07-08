@@ -1,10 +1,26 @@
+module GameLogic
+  # [-] collects user input; returns string
+  def collect_input
+    input = gets.chomp
+    if input.strip.empty?
+      puts 'Waiting for input...'
+      collect_input
+    else
+      input
+    end
+  end
+end
+
 class Game
   attr_accessor :player1, :player2, :board
+
+  include GameLogic
 
   def initialize
     @player1 = Player.new
     @player2 = Player.new
     @board = Board.new
+    @board.game = self
   end
 
   # [x] displays welcome message
@@ -31,27 +47,19 @@ class Game
     puts "Let's play some Connect Four!\n\n"
   end
 
-  # [-] collects user input; returns string
-  def collect_input
-    input = gets.chomp
-    if input.strip.empty?
-      puts 'Waiting for input...'
-      collect_input
-    else
-      input
-    end
-  end
-
   def start
     welcome_message
     assign_player_names
     assign_player_symbols
     @board.game_loop
+    p 'We are back at start method and game is over'
   end
 end
 
 class Player
   attr_accessor :name, :symbol
+
+  include GameLogic
 
   def initialize
     @name = nil
@@ -65,13 +73,23 @@ class Player
 end
 
 class Board
-  attr_accessor :row, :column, :board, :win
+  attr_accessor :row, :column, :board, :win, :game, :it_player
+
+  include GameLogic
 
   def initialize
     @row = 6
     @column = 7
     @board = build_board
     @win = false
+    @game = nil
+    @it_player = nil
+  end
+
+  # Setter for game instance
+  def game=(game_instance)
+    @game = game_instance
+    @it_player = @game.player1 if @game
   end
 
   # [x] builds a grid according to row/column values
@@ -113,7 +131,7 @@ class Board
 
   def increase_count(row)
     count = 0
-    symbol = 'x'
+    symbol = @it_player.symbol
 
     row.each_with_index do |cell, idx|
       if count == 3
@@ -153,7 +171,7 @@ class Board
   def four_diagonal?
     @win = false
     count = 0
-    symbol = 'x'
+    symbol = @it_player.symbol
 
     @board.each_with_index do |r, idx| # row of board
       r.each_with_index do |c, i|
@@ -180,15 +198,36 @@ class Board
     else
       p 'false'
       false
-
     end
   end
 
+  # [-] switches players
+  def switch_players
+    @it_player = if @it_player.nil? || @it_player == @game.player2
+                   @game.player1
+                 else
+                   @game.player2
+                 end
+  end
+
   def game_loop
-    if check_win?
-      p 'GAME OVER....TRIGGER GAME OVER METHOD'
-    else
+    loop do
+      p 'game loop running... '
+      p "it player is #{it_player}"
+      p "current player symbol = #{@it_player.symbol}"
+      if check_win?
+        'GAME OVER....TRIGGER GAME OVER METHOD'
+        declare_win
+        break
+      else
+        print_board(@board)
+        p 'select a column'
+        column_choice = collect_input.to_i end
+
+      falling_piece(column_choice, @it_player.symbol)
       print_board(@board)
+
+      switch_players
     end
   end
 end
@@ -196,8 +235,8 @@ end
 # printed
 # p game.four_diagonal?
 
-game = Game.new
-game.start
+# game = Game.new
+# game.start
 
 # # # horizontal win
 # board.place_piece(0, 0, 'x')

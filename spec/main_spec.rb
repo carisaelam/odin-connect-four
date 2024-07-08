@@ -150,42 +150,47 @@ RSpec.describe Board do
   end
 
   describe '#four_horizontal?' do
-    context 'when four like symbols are in line top row' do
-      subject(:board_four) { described_class.new }
+    let(:board) { described_class.new }
+
+    context 'when four like symbols are in line on the top row' do
       before do
-        board_four.board[0][0] = 'x'
-        board_four.board[0][1] = 'x'
-        board_four.board[0][2] = 'x'
-        board_four.board[0][3] = 'x'
+        board.board[0][0] = 'x'
+        board.board[0][1] = 'x'
+        board.board[0][2] = 'x'
+        board.board[0][3] = 'x'
+        board.it_player = double('Player', symbol: 'x')
       end
+
       it 'returns true' do
-        expect(board_four.four_horizontal?).to eq(true)
+        expect(board.four_horizontal?).to eq(true)
       end
     end
 
-    context 'when four in top row at end' do
-      subject(:board_four) { described_class.new }
+    context 'when four like symbols are in line on the top row at the end' do
       before do
-        board_four.board[0][3] = 'x'
-        board_four.board[0][4] = 'x'
-        board_four.board[0][5] = 'x'
-        board_four.board[0][6] = 'x'
+        board.board[0][3] = 'x'
+        board.board[0][4] = 'x'
+        board.board[0][5] = 'x'
+        board.board[0][6] = 'x'
+        board.it_player = double('Player', symbol: 'x')
       end
+
       it 'returns true' do
-        expect(board_four.four_horizontal?).to eq(true)
+        expect(board.four_horizontal?).to eq(true)
       end
     end
 
-    context 'when four like symbols are in line bottom row' do
-      subject(:board_bottom) { described_class.new }
+    context 'when four like symbols are in line on the bottom row' do
       before do
-        board_bottom.board[5][0] = 'x'
-        board_bottom.board[5][1] = 'x'
-        board_bottom.board[5][2] = 'x'
-        board_bottom.board[5][3] = 'x'
+        board.board[5][0] = 'x'
+        board.board[5][1] = 'x'
+        board.board[5][2] = 'x'
+        board.board[5][3] = 'x'
+        board.it_player = double('Player', symbol: 'x')
       end
+
       it 'returns true' do
-        expect(board_bottom.four_horizontal?).to eq(true)
+        expect(board.four_horizontal?).to eq(true)
       end
     end
   end
@@ -198,6 +203,7 @@ RSpec.describe Board do
         board_vert.board[1][0] = 'x'
         board_vert.board[2][0] = 'x'
         board_vert.board[3][0] = 'x'
+        board_vert.it_player = double('Player', symbol: 'x')
       end
       it 'returns true' do
         expect(board_vert.four_vertical?).to eq(true)
@@ -211,6 +217,7 @@ RSpec.describe Board do
         board_vert.board[3][0] = 'x'
         board_vert.board[4][0] = 'x'
         board_vert.board[5][0] = 'x'
+        board_vert.it_player = double('Player', symbol: 'x')
       end
       it 'returns true' do
         expect(board_vert.four_vertical?).to eq(true)
@@ -224,6 +231,7 @@ RSpec.describe Board do
         board_vert.board[1][5] = 'x'
         board_vert.board[2][5] = 'x'
         board_vert.board[3][5] = 'x'
+        board_vert.it_player = double('Player', symbol: 'x')
       end
       it 'returns true' do
         expect(board_vert.four_vertical?).to be(true)
@@ -239,6 +247,7 @@ RSpec.describe Board do
         board_diag.board[4][1] = 'x'
         board_diag.board[3][2] = 'x'
         board_diag.board[2][3] = 'x'
+        board_diag.it_player = double('Player', symbol: 'x')
       end
       it 'returns true' do
         expect(board_diag.four_diagonal?).to be true
@@ -251,6 +260,7 @@ RSpec.describe Board do
         board_diag_down.board[1][1] = 'x'
         board_diag_down.board[2][2] = 'x'
         board_diag_down.board[3][3] = 'x'
+        board_diag_down.it_player = double('Player', symbol: 'x')
       end
       it 'returns true' do
         expect(board_diag_down.four_diagonal?).to be true
@@ -264,6 +274,7 @@ RSpec.describe Board do
         board_diag_bottom.board[3][4] = 'x'
         board_diag_bottom.board[4][5] = 'x'
         board_diag_bottom.board[5][6] = 'x'
+        board_diag_bottom.it_player = double('Player', symbol: 'x')
       end
       it 'returns true' do
         expect(board_diag_bottom.four_diagonal?).to be true
@@ -275,7 +286,7 @@ RSpec.describe Board do
   #   context 'if horizontal win' do
   #     subject(:board_h_win) { described_class.new }
   #     before do
-  #       board_h_win.four_horizontal? = false
+  #       board_h_win.four_horizontal? == true
   #     end
   #     it 'checks for any winning condition' do
   #       expect(board_h_win.check_win?).to be true
