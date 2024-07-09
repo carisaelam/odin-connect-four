@@ -52,7 +52,7 @@ class Game
     assign_player_names
     assign_player_symbols
     @board.game_loop
-    p 'We are back at start method and game is over'
+    p "Winner is: #{@board.it_player.name}"
   end
 end
 
@@ -89,7 +89,7 @@ class Board
   # Setter for game instance
   def game=(game_instance)
     @game = game_instance
-    @it_player = @game.player1 if @game
+    @it_player = @game.player2 if @game
   end
 
   # [x] builds a grid according to row/column values
@@ -173,16 +173,21 @@ class Board
     count = 0
     symbol = @it_player.symbol
 
-    @board.each_with_index do |r, idx| # row of board
+    board.each_with_index do |r, idx| # row of board
       r.each_with_index do |c, i|
         if count == 3
           declare_win
           return true
         end
-        if @board[idx][i] == symbol && @board[idx - 1][i + 1] == symbol
+        if board[idx + 1].nil?
+          return
+
+        elsif board[idx][i] == symbol && board[idx - 1][i + 1] == symbol
           count += 1
-        elsif @board[idx][i] == symbol && @board[idx + 1][i + 1] == symbol
+        elsif board[idx][i] == symbol && board[idx + 1][i + 1] == symbol
           count += 1
+        else
+          next
         end
       end
     end
@@ -203,31 +208,29 @@ class Board
 
   # [-] switches players
   def switch_players
-    @it_player = if @it_player.nil? || @it_player == @game.player2
-                   @game.player1
-                 else
+    @it_player = if @it_player.nil? || @it_player == @game.player1
                    @game.player2
+                 else
+                   @game.player1
                  end
   end
 
   def game_loop
+    p "loop about to begin. it player is #{it_player.name}"
     loop do
-      p 'game loop running... '
-      p "it player is #{it_player}"
-      p "current player symbol = #{@it_player.symbol}"
       if check_win?
         'GAME OVER....TRIGGER GAME OVER METHOD'
         declare_win
+        print_board(@board)
         break
       else
+        switch_players
         print_board(@board)
-        p 'select a column'
-        column_choice = collect_input.to_i end
-
-      falling_piece(column_choice, @it_player.symbol)
-      print_board(@board)
-
-      switch_players
+        print "#{it_player.name}, select a column: "
+        column_choice = collect_input.to_i
+        falling_piece(column_choice, it_player.symbol)
+        # print_board(@board)
+      end
     end
   end
 end
@@ -235,8 +238,8 @@ end
 # printed
 # p game.four_diagonal?
 
-# game = Game.new
-# game.start
+game = Game.new
+game.start
 
 # # # horizontal win
 # board.place_piece(0, 0, 'x')
