@@ -31,19 +31,19 @@ class Game
   # [x] assigns player names
   def assign_player_names
     print 'Player One Name: '
-    @player1.name = collect_input
+    @player1.name = collect_input.strip.capitalize
     print 'Player Two Name: '
-    @player2.name = collect_input
+    @player2.name = collect_input.strip.capitalize
     puts "Hi #{@player1.name} and #{@player2.name}!\n\n"
   end
 
   # [x] assigns player symbols
   def assign_player_symbols
-    print 'Player One, type a symbol: '
-    @player1.symbol = collect_input[0]
-    print 'Player Two, type a symbol: '
-    @player2.symbol = collect_input[0]
-    puts "Great. #{@player1.name} is #{@player1.symbol} and #{@player2.name} is #{@player2.symbol}!\n\n"
+    print "#{player1.name}, type a symbol: "
+    player1.symbol = collect_input[0]
+    print "#{player2.name}, type a symbol: "
+    player2.symbol = collect_input[0]
+    puts "Great. #{player1.name} is #{player1.symbol} and #{player2.name} is #{player2.symbol}!\n\n"
     puts "Let's play some Connect Four!\n\n"
   end
 
@@ -51,8 +51,8 @@ class Game
     welcome_message
     assign_player_names
     assign_player_symbols
-    @board.game_loop
-    p "Winner is: #{@board.it_player.name}"
+    board.game_loop
+    p "Winner is: #{board.it_player.name}"
   end
 end
 
@@ -99,6 +99,7 @@ class Board
 
   # [-] prints given array of arrays
   def print_board(array)
+    puts (1..column).to_a.join(' ')
     array.each do |row|
       puts row.join(' ')
     end
@@ -233,11 +234,8 @@ class Board
   end
 end
 
-# printed
-# p game.four_diagonal?
-
-# game = Game.new
-# game.start
+game = Game.new
+game.start
 
 # # # horizontal win
 # board.place_piece(0, 0, 'x')
