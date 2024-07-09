@@ -99,10 +99,11 @@ class Board
 
   # [-] prints given array of arrays
   def print_board(array)
-    puts (1..column).to_a.join(' ')
+    puts ' '
     array.each do |row|
       puts row.join(' ')
     end
+    puts (1..column).to_a.join(' ')
   end
 
   # [x] updates @board with given array
@@ -200,7 +201,6 @@ class Board
       p 'diag win'
       true
     else
-      p 'false'
       false
     end
   end
@@ -215,27 +215,25 @@ class Board
   end
 
   def game_loop
-    p "loop about to begin. it player is #{it_player.name}"
     loop do
       if check_win?
-        'GAME OVER....TRIGGER GAME OVER METHOD'
         declare_win
         print_board(@board)
         break
       else
         switch_players
         print_board(@board)
+        puts ' '
         print "#{it_player.name}, select a column: "
         column_choice = collect_input.to_i
         falling_piece(column_choice, it_player.symbol)
-        # print_board(@board)
       end
     end
   end
 end
 
-# game = Game.new
-# game.start
+game = Game.new
+game.start
 
 # # # horizontal win
 # board.place_piece(0, 0, 'x')
