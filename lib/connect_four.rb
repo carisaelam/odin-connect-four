@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# contains user input collection method
 module GameLogic
   # [-] collects user input; returns string
   def collect_input
@@ -11,8 +12,18 @@ module GameLogic
       input
     end
   end
+
+  def validate_column_choice(integer)
+    loop do
+      return integer if integer.between?(1, column)
+
+      puts "Pick a number between 1–#{column}"
+      integer = collect_input.to_i
+    end
+  end
 end
 
+# contains general game play methods
 class Game
   attr_accessor :player1, :player2, :board
 
@@ -39,14 +50,30 @@ class Game
     puts "Hi #{@player1.name} and #{@player2.name}!\n\n"
   end
 
+  def announce_player_symbols
+    puts "Great. #{player1.name} is #{player1.symbol} and #{player2.name} is #{player2.symbol}!\n\n"
+    puts "Let's play some Connect Four!\n\n"
+  end
+
+  # [ ] checks for any winning conditions
+  def check_win?
+    return true if board.four_horizontal? == true || board.four_vertical? == true || board.four_diagonal? == true
+
+    false
+  end
+
   # [x] assigns player symbols
   def assign_player_symbols
     print "#{player1.name}, type a symbol: "
     player1.symbol = collect_input[0]
     print "#{player2.name}, type a symbol: "
     player2.symbol = collect_input[0]
-    puts "Great. #{player1.name} is #{player1.symbol} and #{player2.name} is #{player2.symbol}!\n\n"
-    puts "Let's play some Connect Four!\n\n"
+    announce_player_symbols
+  end
+
+  def process_win
+    board.declare_win
+    board.print_board(board.board)
   end
 
   def restart
@@ -60,15 +87,28 @@ class Game
     gets.chomp.upcase == 'Y' ? restart : return
   end
 
+  def game_loop
+    loop do
+      if check_win?
+        process_win
+        break
+      else
+        board.play_on
+      end
+    end
+    p "Winner is: #{board.it_player.name}"
+  end
+
   def start
     welcome_message
     assign_player_names
     assign_player_symbols
-    board.game_loop
+    game_loop
     play_again
   end
 end
 
+# contains methods appropriate to produce the player objects
 class Player
   attr_accessor :name, :symbol
 
@@ -85,6 +125,7 @@ class Player
   end
 end
 
+# contains methods to create and modify game board
 class Board
   attr_accessor :row, :column, :board, :win, :it_player
 
@@ -118,16 +159,6 @@ class Board
     end
     puts Array.new(column, '—').join(' ')
     puts (1..column).to_a.join(' ')
-  end
-
-  # [x] updates @board with given array
-  def update_board(array)
-    @board = array
-  end
-
-  # [x] updates board array at specified cell
-  def place_piece(row_choice, column_choice, symbol)
-    @board[row_choice][column_choice] = symbol
   end
 
   # [x] drops a piece in the lowest available row of given column
@@ -183,6 +214,18 @@ class Board
     @win
   end
 
+  def up_and_right(row, col, symbol)
+    return false unless row <= board.size - 4 && col <= board[0].size - 4
+
+    (0..3).all? { |i| board[row + i][col + i] == symbol }
+  end
+
+  def down_and_right(row, col, symbol)
+    return false unless row >= 3 && col <= board[0].size - 4
+
+    (0..3).all? { |i| board[row - i][col + i] == symbol }
+  end
+
   # [x] checks for four like symbols diagonal
   def four_diagonal?
     symbol = @it_player.symbol
@@ -191,23 +234,10 @@ class Board
 
     rows.times do |row|
       cols.times do |col|
-        if row <= rows - 4 && col <= cols - 4 && (0..3).all? { |i| board[row + i][col + i] == symbol }
-          declare_win
-          return true
-        end
-        if row >= 3 && col <= cols - 4 && (0..3).all? { |i| board[row - i][col + i] == symbol }
-          declare_win
-          return true
-        end
+        return true if up_and_right(row, col, symbol)
+        return true if down_and_right(row, col, symbol)
       end
     end
-  end
-
-  # [ ] checks for any winning conditions
-  def check_win?
-    return true if four_horizontal? == true || four_vertical? == true || four_diagonal? == true
-
-    false
   end
 
   # [-] switches players
@@ -219,32 +249,13 @@ class Board
                  end
   end
 
-  def validate_column_choice(integer)
-    loop do
-      return integer if integer.between?(1, column)
-
-      puts "Pick a number between 1–#{column}"
-      integer = collect_input.to_i
-    end
-  end
-
-  def game_loop
-    loop do
-      if check_win?
-        declare_win
-        print_board(@board)
-        break
-      else
-        switch_players
-        print_board(@board)
-        puts ' '
-        print "#{it_player.name}, select a column: "
-        column_choice = validate_column_choice(collect_input.to_i)
-        puts "validated column choice is: #{column_choice}"
-        falling_piece(column_choice, it_player.symbol)
-      end
-    end
-    p "Winner is: #{it_player.name}"
+  def play_on
+    switch_players
+    print_board(@board)
+    puts ' '
+    print "#{it_player.name}, select a column: "
+    column_choice = validate_column_choice(collect_input.to_i)
+    puts "validated column choice is: #{column_choice}"
+    falling_piece(column_choice, it_player.symbol)
   end
 end
-
