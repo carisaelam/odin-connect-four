@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GameLogic
   # [-] collects user input; returns string
   def collect_input
@@ -94,7 +96,7 @@ class Board
 
   # [x] builds a grid according to row/column values
   def build_board(row_count = @row, column_count = @column)
-    board = Array.new(row_count) { Array.new(column_count, '.') }
+    Array.new(row_count) { Array.new(column_count, '.') }
   end
 
   # [-] prints given array of arrays
@@ -135,7 +137,7 @@ class Board
     count = 0
     symbol = @it_player.symbol
 
-    row.each_with_index do |cell, idx|
+    row.each_with_index do |_cell, idx|
       if count == 3
         declare_win
         return true
@@ -214,6 +216,15 @@ class Board
                  end
   end
 
+  def validate_column_choice(integer)
+    loop do
+      return integer if integer.between?(1, 7)
+
+      puts 'Pick a number between 1–7'
+      integer = collect_input.to_i
+    end
+  end
+
   def game_loop
     loop do
       if check_win?
@@ -225,7 +236,8 @@ class Board
         print_board(@board)
         puts ' '
         print "#{it_player.name}, select a column: "
-        column_choice = collect_input.to_i
+        column_choice = validate_column_choice(collect_input.to_i)
+        puts "validated column choice is: #{column_choice}"
         falling_piece(column_choice, it_player.symbol)
       end
     end
