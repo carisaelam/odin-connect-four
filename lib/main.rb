@@ -118,11 +118,11 @@ class Board
   # [x] drops a piece in the lowest available row of given column
   def falling_piece(column_select, symbol)
     i = @row - 1
-    return nil if @board[0][column_select] != '.'
+    return nil if @board[0][column_select - 1] != '.'
 
-    i -= 1 until @board[i][column_select] == '.' || i.zero?
+    i -= 1 until @board[i][column_select - 1] == '.' || i.zero?
     row_select = i
-    @board[row_select][column_select] = symbol
+    @board[row_select][column_select - 1] = symbol
   end
 
   # [x] updates value of @win to true
@@ -234,8 +234,8 @@ class Board
   end
 end
 
-game = Game.new
-game.start
+# game = Game.new
+# game.start
 
 # # # horizontal win
 # board.place_piece(0, 0, 'x')

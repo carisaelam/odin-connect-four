@@ -110,7 +110,7 @@ RSpec.describe Board do
     context 'when the column is empty' do
       it 'drops a piece into the lowest row' do
         symbol = 'x'
-        board_fall.falling_piece(0, 'x')
+        board_fall.falling_piece(1, 'x')
         expect(board_fall.board[5][0]).to eq(symbol)
       end
     end
@@ -121,7 +121,7 @@ RSpec.describe Board do
       end
       it 'drops a piece into the second lowest row' do
         symbol = 'x'
-        board_fall.falling_piece(0, 'x')
+        board_fall.falling_piece(1, 'x')
         expect(board_fall.board[4][0]).to eq(symbol)
       end
     end
@@ -132,7 +132,7 @@ RSpec.describe Board do
       end
       it 'returns nil' do
         symbol = 'x'
-        result = board_fall.falling_piece(0, 'x')
+        result = board_fall.falling_piece(1, 'x')
         expect(result).to be(nil)
       end
     end
