@@ -65,7 +65,6 @@ class Game
     assign_player_names
     assign_player_symbols
     board.game_loop
-    p "Winner is: #{board.it_player.name}"
     play_again
   end
 end
@@ -117,6 +116,7 @@ class Board
     array.each do |row|
       puts row.join(' ')
     end
+    puts Array.new(column, '—').join(' ')
     puts (1..column).to_a.join(' ')
   end
 
@@ -205,18 +205,9 @@ class Board
 
   # [ ] checks for any winning conditions
   def check_win?
-    if four_horizontal? == true
-      p 'hori win'
-      true
-    elsif four_vertical? == true
-      p 'vert win'
-      true
-    elsif four_diagonal? == true
-      p 'diag win'
-      true
-    else
-      false
-    end
+    return true if four_horizontal? == true || four_vertical? == true || four_diagonal? == true
+
+    false
   end
 
   # [-] switches players
@@ -253,8 +244,7 @@ class Board
         falling_piece(column_choice, it_player.symbol)
       end
     end
+    p "Winner is: #{it_player.name}"
   end
 end
 
-game = Game.new
-game.start
