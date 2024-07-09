@@ -169,36 +169,34 @@ class Board
 
   # [x] checks for four like symbols diagonal
   def four_diagonal?
-    @win = false
-    count = 0
     symbol = @it_player.symbol
+    rows = board.size
+    cols = board[0].size
 
-    board.each_with_index do |r, idx| # row of board
-      r.each_with_index do |c, i|
-        if count == 3
+    rows.times do |row|
+      cols.times do |col|
+        if row <= rows - 4 && col <= cols - 4 && (0..3).all? { |i| board[row + i][col + i] == symbol }
           declare_win
           return true
         end
-        if board[idx + 1].nil?
-          return
-
-        elsif board[idx][i] == symbol && board[idx - 1][i + 1] == symbol
-          count += 1
-        elsif board[idx][i] == symbol && board[idx + 1][i + 1] == symbol
-          count += 1
-        else
-          next
+        if row >= 3 && col <= cols - 4 && (0..3).all? { |i| board[row - i][col + i] == symbol }
+          declare_win
+          return true
         end
       end
     end
-    @win
   end
 
   # [ ] checks for any winning conditions
   def check_win?
-    if four_horizontal? == true ||
-       four_vertical? == true || four_diagonal? == true
-      p 'true'
+    if four_horizontal? == true
+      p 'hori win'
+      true
+    elsif four_vertical? == true
+      p 'vert win'
+      true
+    elsif four_diagonal? == true
+      p 'diag win'
       true
     else
       p 'false'
@@ -238,8 +236,8 @@ end
 # printed
 # p game.four_diagonal?
 
-game = Game.new
-game.start
+# game = Game.new
+# game.start
 
 # # # horizontal win
 # board.place_piece(0, 0, 'x')

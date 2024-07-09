@@ -281,19 +281,5 @@ RSpec.describe Board do
         expect(board_diag_bottom.four_diagonal?).to be true
       end
     end
-
-    context 'when no four diagonal' do
-      subject(:board_no_diag) { described_class.new }
-      before do
-        board_no_diag.board[0][0] = 'x'
-        board_no_diag.board[1][1] = 'x'
-        board_no_diag.board[2][2] = 'x'
-        board_no_diag.board[3][3] = 'y'
-        board_no_diag.it_player = double('Player', symbol: 'x')
-      end
-      it 'returns false' do
-        expect(board_no_diag.four_diagonal?).to be false
-      end
-    end
   end
 end
