@@ -49,12 +49,24 @@ class Game
     puts "Let's play some Connect Four!\n\n"
   end
 
+  def restart
+    new_game = Game.new
+    new_game.start
+  end
+
+  def play_again
+    puts '  '
+    print 'Play again? Y/N: '
+    gets.chomp.upcase == 'Y' ? restart : return
+  end
+
   def start
     welcome_message
     assign_player_names
     assign_player_symbols
     board.game_loop
     p "Winner is: #{board.it_player.name}"
+    play_again
   end
 end
 
@@ -75,7 +87,7 @@ class Player
 end
 
 class Board
-  attr_accessor :row, :column, :board, :win, :game, :it_player
+  attr_accessor :row, :column, :board, :win, :it_player
 
   include GameLogic
 
@@ -218,9 +230,9 @@ class Board
 
   def validate_column_choice(integer)
     loop do
-      return integer if integer.between?(1, 7)
+      return integer if integer.between?(1, column)
 
-      puts 'Pick a number between 1–7'
+      puts "Pick a number between 1–#{column}"
       integer = collect_input.to_i
     end
   end
@@ -246,30 +258,3 @@ end
 
 game = Game.new
 game.start
-
-# # # horizontal win
-# board.place_piece(0, 0, 'x')
-# board.place_piece(0, 1, 'x')
-# board.place_piece(0, 2, 'x')
-# board.place_piece(0, 3, 'x')
-
-# # vertical win
-# board.place_piece(1, 3, 'x')
-# board.place_piece(2, 3, 'x')
-# board.place_piece(3, 3, 'x')
-# board.place_piece(4, 3, 'x')
-
-# diagonal win
-# board.place_piece(1, 2, 'x')
-# board.place_piece(2, 3, 'x')
-# board.place_piece(3, 4, 'x')
-# board.place_piece(4, 5, 'x')
-
-# printed = board.print_board(board.board)
-# p printed
-
-# # p board.four_horizontal?
-# # p board.four_vertical?
-# # p board.four_diagonal?
-
-# p board.check_win?
